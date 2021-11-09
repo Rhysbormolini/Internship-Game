@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MenuScene : MonoBehaviour
 {
@@ -16,6 +17,20 @@ public class MenuScene : MonoBehaviour
     public Transform colourPanel;
     public Transform laserPanel;
     public Transform trailPanel;
+
+    [SerializeField] TextMeshProUGUI shipBuySetText;
+    [SerializeField] TextMeshProUGUI colourBuySetText;
+    [SerializeField] TextMeshProUGUI laserBuySetText;
+    [SerializeField] TextMeshProUGUI trailBuySetText;
+
+    private int[] shipCost = new int[] { 0, 2500, 2500, 2500, 5000, 5000, 5000, 10000 };
+    private int[] colourCost = new int[] { 0, 1750, 1750, 1750, 1750, 1750, 1750, 1750 };
+    private int[] laserCost = new int[] { 0, 1000, 1000, 1000, 1000, 1000, 1000, 1000 };
+    private int[] trailCost = new int[] { 0, 1200, 1200, 1200, 1200, 1200, 1200, 1200 };
+    private int selectedShipIndex;
+    private int selectedColourIndex;
+    private int selectedLaserIndex;
+    private int selectedTrailIndex;
 
     private Vector3 desiredMenuPosition;
 
@@ -139,6 +154,40 @@ public class MenuScene : MonoBehaviour
         }
     }
 
+    private void SetShip(int index)
+    {
+        // Change the selected ship
+
+        // Change the buy/set button text
+        shipBuySetText.text = "Current";
+    }   
+    
+    private void SetColour(int index)
+    {
+        // Change the colour of all ships
+
+        // Change the buy/set button text
+        colourBuySetText.text = "Current";
+    }       
+    
+    private void SetLaser(int index)
+    {
+        // Change the colour on all lasers
+
+        // Change the buy/set button text
+        laserBuySetText.text = "Current";
+
+    }    
+    
+    private void SetTrail(int index)
+    {
+        // Change the colour on all trails
+
+        // Change the buy/set button text
+        trailBuySetText.text = "Current";
+    }
+    
+    
     //Buttons
     public void OnPlayClick()
     {
@@ -157,49 +206,197 @@ public class MenuScene : MonoBehaviour
         NavigateTo(0);
         Debug.Log("Back button has been clicked!");
     }
-
-    private void OnColourSelect(int currentIndex)
-    {
-        Debug.Log("Selecting colour button : " + currentIndex);
-    }
-
-    private void OnLaserSelect(int currentIndex)
-    {
-        Debug.Log("Selecting laser button : " + currentIndex);
-    }
-
-    private void OnTrailSelect(int currentIndex)
-    {
-        Debug.Log("Selecting trail button : " + currentIndex);
-    }
-
-    private void OnShipSelect(int currentIndex)
-    {
-        Debug.Log("Selecting ship button : " + currentIndex);
-    }    
     
     private void OnLevelSelect(int currentIndex)
     {
         Debug.Log("Selecting level : " + currentIndex);
     }
 
+    private void OnColourSelect(int currentIndex)
+    {
+        Debug.Log("Selecting colour button : " + currentIndex);
+
+        // Set the selected Colour
+        selectedColourIndex = currentIndex;
+
+        // Change the content of the buy/set button. depending on he state of the colour
+        if (SaveManager.Instance.IsColourOwned(currentIndex))
+        {
+            // Colour is owned
+            colourBuySetText.text = "Select";
+        }
+        else
+        {
+            // Colour isn't owned
+            colourBuySetText.text = "Buy: " + colourCost[currentIndex].ToString();
+        }
+    }
+
+    private void OnLaserSelect(int currentIndex)
+    {
+        Debug.Log("Selecting laser button : " + currentIndex);
+
+        // Set the selected Laser
+        selectedLaserIndex = currentIndex;
+
+        // Change the content of the buy/set button. depending on he state of the colour
+        if (SaveManager.Instance.IsLaserOwned(currentIndex))
+        {
+            // Laser is owned
+            laserBuySetText.text = "Select";
+        }
+        else
+        {
+            // Laser isn't owned
+            laserBuySetText.text = "Buy: " + laserCost[currentIndex].ToString();
+        }
+    }
+
+    private void OnTrailSelect(int currentIndex)
+    {
+        Debug.Log("Selecting trail button : " + currentIndex);
+
+        // Set the selected Trail
+        selectedTrailIndex = currentIndex;
+
+        // Change the content of the buy/set button. depending on he state of the colour
+        if (SaveManager.Instance.IsTrailOwned(currentIndex))
+        {
+            // Trail is owned
+            trailBuySetText.text = "Select";
+        }
+        else
+        {
+            // Trail isn't owned
+            trailBuySetText.text = "Buy: " + trailCost[currentIndex].ToString();
+        }
+    }
+
+    private void OnShipSelect(int currentIndex)
+    {
+        Debug.Log("Selecting ship button : " + currentIndex);
+
+        // Set the selected Ship
+        selectedShipIndex = currentIndex;
+
+        // Change the content of the buy/set button. depending on he state of the colour
+        if (SaveManager.Instance.IsShipOwned(currentIndex))
+        {
+            // Ship is owned
+            shipBuySetText.text = "Select";
+        }
+        else
+        {
+            // Ship isn't owned
+            shipBuySetText.text = "Buy: " + shipCost[currentIndex].ToString();
+        }
+    }    
+    
     public void OnColourBuySet()
     {
         Debug.Log("Buy/Set Colour");
+
+        // Is the selected colour owned
+        if (SaveManager.Instance.IsColourOwned(selectedColourIndex))
+        {
+            // Set the Colour!
+            SetColour(selectedColourIndex);
+        }
+        else
+        {
+            // Attempt to Buy the Colour
+            if (SaveManager.Instance.BuyColour(selectedColourIndex, colourCost[selectedColourIndex]))
+            {
+                // Success!
+                SetColour(selectedColourIndex);
+            }
+            else
+            {
+                // Do not have enough gold!
+                // Play sound feedback
+                Debug.Log("Not enough gold");
+            }
+        }
     }
 
     public void OnLaserBuySet()
     {
         Debug.Log("Buy/Set Laser");
+
+        // Is the selected laser owned
+        if (SaveManager.Instance.IsLaserOwned(selectedLaserIndex))
+        {
+            // Set the Laser!
+            SetLaser(selectedLaserIndex);
+        }
+        else
+        {
+            // Attempt to Buy the Laser
+            if (SaveManager.Instance.BuyLaser(selectedLaserIndex, laserCost[selectedLaserIndex]))
+            {
+                // Success!
+                SetLaser(selectedLaserIndex);
+            }
+            else
+            {
+                // Do not have enough gold!
+                // Play sound feedback
+                Debug.Log("Not enough gold");
+            }
+        }
     }
 
     public void OnTrailBuySet()
     {
         Debug.Log("Buy/Set Trail");
+
+        // Is the selected trail owned
+        if (SaveManager.Instance.IsTrailOwned(selectedTrailIndex))
+        {
+            // Set the Trail!
+            SetTrail(selectedTrailIndex);
+        }
+        else
+        {
+            // Attempt to Buy the Trail
+            if (SaveManager.Instance.BuyTrail(selectedTrailIndex, trailCost[selectedTrailIndex]))
+            {
+                // Success!
+                SetTrail(selectedTrailIndex);
+            }
+            else
+            {
+                // Do not have enough gold!
+                // Play sound feedback
+                Debug.Log("Not enough gold");
+            }
+        }
     }
 
     public void OnShipBuySet()
     {
         Debug.Log("Buy/Set Ship");
+
+        // Is the selected Ship owned
+        if (SaveManager.Instance.IsShipOwned(selectedShipIndex))
+        {
+            // Set the Ship!
+            SetShip(selectedShipIndex);
+        }
+        else
+        {
+            // Attempt to Buy the Ship
+            if (SaveManager.Instance.BuyShip(selectedShipIndex, shipCost[selectedShipIndex]))
+            {
+                // Success!
+                SetShip(selectedShipIndex);
+            }
+            else
+            {
+                // Do not have enough gold!
+                // Play sound feedback
+                Debug.Log("Not enough gold");
+            }
+        }
     }
 }
