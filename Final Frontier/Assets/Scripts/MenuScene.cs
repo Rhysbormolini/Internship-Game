@@ -22,6 +22,7 @@ public class MenuScene : MonoBehaviour
     [SerializeField] TextMeshProUGUI colourBuySetText;
     [SerializeField] TextMeshProUGUI laserBuySetText;
     [SerializeField] TextMeshProUGUI trailBuySetText;
+    [SerializeField] TextMeshProUGUI goldText;
 
     private int[] shipCost = new int[] { 0, 2500, 2500, 2500, 5000, 5000, 5000, 10000 };
     private int[] colourCost = new int[] { 0, 1750, 1750, 1750, 1750, 1750, 1750, 1750 };
@@ -30,12 +31,23 @@ public class MenuScene : MonoBehaviour
     private int selectedShipIndex;
     private int selectedColourIndex;
     private int selectedLaserIndex;
-    private int selectedTrailIndex;
+    private int selectedTrailIndex;    
+    private int activeShipIndex;
+    private int activeColourIndex;
+    private int activeLaserIndex;
+    private int activeTrailIndex;
+
 
     private Vector3 desiredMenuPosition;
 
     private void Start()
     {
+        // $$ TEMPORARY
+        SaveManager.Instance.state.gold = 999999;
+
+        // Tell our gold text how much should be displaying
+        UpdateGoldText();
+        
         // Grab the onl CanvasGroup in the scene
         fadeGroup = FindObjectOfType<CanvasGroup>();
 
@@ -47,6 +59,25 @@ public class MenuScene : MonoBehaviour
 
         // Add buttons on-click events to levels
         InitLevel();
+
+        // Set player's preferences ( ship, colour, laser, trail )
+        OnShipSelect(SaveManager.Instance.state.activeShip);
+        SetShip(SaveManager.Instance.state.activeShip);
+
+        OnColourSelect(SaveManager.Instance.state.activeColour);
+        SetColour(SaveManager.Instance.state.activeColour);
+
+        OnLaserSelect(SaveManager.Instance.state.activeLaser);
+        SetLaser(SaveManager.Instance.state.activeLaser);
+
+        OnTrailSelect(SaveManager.Instance.state.activeTrail);
+        SetTrail(SaveManager.Instance.state.activeTrail);
+
+        // Make the buttons bigger for the selected items
+        shipPanel.GetChild(SaveManager.Instance.state.activeShip).GetComponent<RectTransform>().localScale = Vector3.one * 1.2f;
+        colourPanel.GetChild(SaveManager.Instance.state.activeColour).GetComponent<RectTransform>().localScale = Vector3.one * 1.2f;
+        laserPanel.GetChild(SaveManager.Instance.state.activeLaser).GetComponent<RectTransform>().localScale = Vector3.one * 1.2f;
+        trailPanel.GetChild(SaveManager.Instance.state.activeTrail).GetComponent<RectTransform>().localScale = Vector3.one * 1.2f;
     }
 
     private void Update()
@@ -74,6 +105,10 @@ public class MenuScene : MonoBehaviour
             Button b = t.GetComponent<Button>();
             b.onClick.AddListener(() => OnColourSelect(currentIndex));
 
+            // Set the colour of the image, based on if owned or not
+            Image img = t.GetComponent<Image>();
+            img.color = SaveManager.Instance.IsColourOwned(i) ? Color.white : new Color(0.6f, 0.6f, 0.6f);
+
             i++;
         }
 
@@ -85,6 +120,10 @@ public class MenuScene : MonoBehaviour
             int currentIndex = i;
             Button b = t.GetComponent<Button>();
             b.onClick.AddListener(() => OnLaserSelect(currentIndex));
+
+            // Set the colour of the image, based on if owned or not
+            Image img = t.GetComponent<Image>();
+            img.color = SaveManager.Instance.IsLaserOwned(i) ? Color.white : new Color(0.6f, 0.6f, 0.6f);
 
             i++;
         }
@@ -98,6 +137,10 @@ public class MenuScene : MonoBehaviour
             Button b = t.GetComponent<Button>();
             b.onClick.AddListener(() => OnTrailSelect(currentIndex));
 
+            // Set the colour of the image, based on if owned or not
+            Image img = t.GetComponent<Image>();
+            img.color = SaveManager.Instance.IsTrailOwned(i) ? Color.white : new Color(0.6f, 0.6f, 0.6f);
+
             i++;
         }
 
@@ -109,6 +152,10 @@ public class MenuScene : MonoBehaviour
             int currentIndex = i;
             Button b = t.GetComponent<Button>();
             b.onClick.AddListener(() => OnShipSelect(currentIndex));
+
+            // Set the colour of the image, based on if owned or not
+            Image img = t.GetComponent<Image>();
+            img.color = SaveManager.Instance.IsShipOwned(i) ? Color.white : new Color(0.6f, 0.6f, 0.6f);
 
             i++;
         }
@@ -156,37 +203,68 @@ public class MenuScene : MonoBehaviour
 
     private void SetShip(int index)
     {
+        // Set the active index
+        activeShipIndex = index;
+        SaveManager.Instance.state.activeShip = index;
+        
         // Change the selected ship
 
         // Change the buy/set button text
         shipBuySetText.text = "Current";
+
+        // Remember preferences
+        SaveManager.Instance.Save();
     }   
     
     private void SetColour(int index)
     {
+        // Set the active index
+        activeColourIndex = index;
+        SaveManager.Instance.state.activeColour = index;
+
         // Change the colour of all ships
 
         // Change the buy/set button text
         colourBuySetText.text = "Current";
+
+        // Remember preferences
+        SaveManager.Instance.Save();
     }       
     
     private void SetLaser(int index)
     {
+        // Set the active index
+        activeLaserIndex = index;
+        SaveManager.Instance.state.activeLaser = index;
+
         // Change the colour on all lasers
 
         // Change the buy/set button text
         laserBuySetText.text = "Current";
 
+        // Remember preferences
+        SaveManager.Instance.Save();
     }    
     
     private void SetTrail(int index)
     {
+        // Set the active index
+        activeTrailIndex = index;
+        SaveManager.Instance.state.activeTrail = index;
+
         // Change the colour on all trails
 
         // Change the buy/set button text
         trailBuySetText.text = "Current";
+
+        // Remember preferences
+        SaveManager.Instance.Save();
     }
-    
+
+    private void UpdateGoldText()
+    {
+        goldText.text = SaveManager.Instance.state.gold.ToString();
+    }
     
     //Buttons
     public void OnPlayClick()
@@ -216,6 +294,17 @@ public class MenuScene : MonoBehaviour
     {
         Debug.Log("Selecting colour button : " + currentIndex);
 
+        // if the button clicked is already selected, exit
+        if (selectedColourIndex == currentIndex)
+        {
+            return;
+        }
+
+        // Make the icon slightly bigger
+        colourPanel.GetChild(currentIndex).GetComponent<RectTransform>().localScale = Vector3.one * 1.2f;
+        // Put the previouys one on normal scale
+        colourPanel.GetChild(selectedColourIndex).GetComponent<RectTransform>().localScale = Vector3.one;
+
         // Set the selected Colour
         selectedColourIndex = currentIndex;
 
@@ -223,18 +312,37 @@ public class MenuScene : MonoBehaviour
         if (SaveManager.Instance.IsColourOwned(currentIndex))
         {
             // Colour is owned
-            colourBuySetText.text = "Select";
+            // is it already our current colour?
+            if (activeColourIndex == currentIndex)
+            {
+                colourBuySetText.text = "Current Colour";
+            }
+            else
+            {
+                colourBuySetText.text = "Select Colour";
+            }
         }
         else
         {
             // Colour isn't owned
-            colourBuySetText.text = "Buy: " + colourCost[currentIndex].ToString();
+            colourBuySetText.text = "Buy Colour: " + colourCost[currentIndex].ToString();
         }
     }
 
     private void OnLaserSelect(int currentIndex)
     {
         Debug.Log("Selecting laser button : " + currentIndex);
+
+        // if the button clicked is already selected, exit
+        if (selectedLaserIndex == currentIndex)
+        {
+            return;
+        }
+
+        // Make the icon slightly bigger
+        laserPanel.GetChild(currentIndex).GetComponent<RectTransform>().localScale = Vector3.one * 1.2f;
+        // Put the previouys one on normal scale
+        laserPanel.GetChild(selectedLaserIndex).GetComponent<RectTransform>().localScale = Vector3.one;
 
         // Set the selected Laser
         selectedLaserIndex = currentIndex;
@@ -243,18 +351,37 @@ public class MenuScene : MonoBehaviour
         if (SaveManager.Instance.IsLaserOwned(currentIndex))
         {
             // Laser is owned
-            laserBuySetText.text = "Select";
+            // is it already our current colour?
+            if (activeLaserIndex == currentIndex)
+            {
+                laserBuySetText.text = "Current Laser";
+            }
+            else
+            {
+                laserBuySetText.text = "Select Laser";
+            }
         }
         else
         {
             // Laser isn't owned
-            laserBuySetText.text = "Buy: " + laserCost[currentIndex].ToString();
+            laserBuySetText.text = "Buy laser: " + laserCost[currentIndex].ToString();
         }
     }
 
     private void OnTrailSelect(int currentIndex)
     {
         Debug.Log("Selecting trail button : " + currentIndex);
+
+        // if the button clicked is already selected, exit
+        if (selectedTrailIndex == currentIndex)
+        {
+            return;
+        }
+
+        // Make the icon slightly bigger
+        trailPanel.GetChild(currentIndex).GetComponent<RectTransform>().localScale = Vector3.one * 1.2f;
+        // Put the previouys one on normal scale
+        trailPanel.GetChild(selectedTrailIndex).GetComponent<RectTransform>().localScale = Vector3.one;
 
         // Set the selected Trail
         selectedTrailIndex = currentIndex;
@@ -263,18 +390,37 @@ public class MenuScene : MonoBehaviour
         if (SaveManager.Instance.IsTrailOwned(currentIndex))
         {
             // Trail is owned
-            trailBuySetText.text = "Select";
+            // is it already our current colour?
+            if (activeTrailIndex == currentIndex)
+            {
+                trailBuySetText.text = "Current Trail";
+            }
+            else
+            {
+                trailBuySetText.text = "Select Trail";
+            }
         }
         else
         {
             // Trail isn't owned
-            trailBuySetText.text = "Buy: " + trailCost[currentIndex].ToString();
+            trailBuySetText.text = "Buy Trail: " + trailCost[currentIndex].ToString();
         }
     }
 
     private void OnShipSelect(int currentIndex)
     {
         Debug.Log("Selecting ship button : " + currentIndex);
+
+        // if the button clicked is already selected, exit
+        if (selectedShipIndex == currentIndex)
+        {
+            return;
+        }
+
+        // Make the icon slightly bigger
+        shipPanel.GetChild(currentIndex).GetComponent<RectTransform>().localScale = Vector3.one * 1.2f;
+        // Put the previouys one on normal scale
+        shipPanel.GetChild(selectedShipIndex).GetComponent<RectTransform>().localScale = Vector3.one;
 
         // Set the selected Ship
         selectedShipIndex = currentIndex;
@@ -283,12 +429,20 @@ public class MenuScene : MonoBehaviour
         if (SaveManager.Instance.IsShipOwned(currentIndex))
         {
             // Ship is owned
-            shipBuySetText.text = "Select";
+            // is it already our current colour?
+            if (activeShipIndex == currentIndex)
+            {
+                shipBuySetText.text = "Current Ship";
+            }
+            else
+            {
+                shipBuySetText.text = "Select Ship";
+            }
         }
         else
         {
             // Ship isn't owned
-            shipBuySetText.text = "Buy: " + shipCost[currentIndex].ToString();
+            shipBuySetText.text = "Buy Ship: " + shipCost[currentIndex].ToString();
         }
     }    
     
@@ -309,6 +463,12 @@ public class MenuScene : MonoBehaviour
             {
                 // Success!
                 SetColour(selectedColourIndex);
+
+                // Change colour of the button
+                colourPanel.GetChild(selectedColourIndex).GetComponent<Image>().color = Color.white;
+
+                // Update gold text
+                UpdateGoldText();
             }
             else
             {
@@ -336,6 +496,12 @@ public class MenuScene : MonoBehaviour
             {
                 // Success!
                 SetLaser(selectedLaserIndex);
+
+                // Change colour of the button
+                laserPanel.GetChild(selectedLaserIndex).GetComponent<Image>().color = Color.white;
+
+                // Update gold text
+                UpdateGoldText();
             }
             else
             {
@@ -363,6 +529,12 @@ public class MenuScene : MonoBehaviour
             {
                 // Success!
                 SetTrail(selectedTrailIndex);
+
+                // Change colour of the button
+                trailPanel.GetChild(selectedTrailIndex).GetComponent<Image>().color = Color.white;
+
+                // Update gold text
+                UpdateGoldText();
             }
             else
             {
@@ -390,6 +562,12 @@ public class MenuScene : MonoBehaviour
             {
                 // Success!
                 SetShip(selectedShipIndex);
+
+                // Change colour of the button
+                shipPanel.GetChild(selectedShipIndex).GetComponent<Image>().color = Color.white;
+
+                // Update gold text
+                UpdateGoldText();
             }
             else
             {
