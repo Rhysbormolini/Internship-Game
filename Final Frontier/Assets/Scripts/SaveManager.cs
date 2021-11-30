@@ -9,7 +9,7 @@ public class SaveManager : MonoBehaviour
 
     private void Awake()
     {
-        //ResetSave();
+        ResetSave();
         DontDestroyOnLoad(gameObject);
         Instance = this;
         Load();
@@ -177,6 +177,17 @@ public class SaveManager : MonoBehaviour
         // Toggle on the bit at index
         state.trailOwned |= 1 << index;
     }
+
+    // Complete Level
+    public void CompleteLevel(int index)
+    {
+        // if this is the current active level
+        if (state.completedLevel == index)
+        {
+            state.completedLevel++;
+            Save();
+        }
+    }    
 
     // Reset the whole save file
     public void ResetSave()

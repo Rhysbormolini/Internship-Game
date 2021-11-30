@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class MenuScene : MonoBehaviour
 {
@@ -44,6 +45,9 @@ public class MenuScene : MonoBehaviour
     {
         // $$ TEMPORARY
         SaveManager.Instance.state.gold = 999999;
+
+        // Position our camera on the focused menu
+        SetCameraTo(Manager.Instance.menuFocus);
 
         // Tell our gold text how much should be displaying
         UpdateGoldText();
@@ -177,8 +181,40 @@ public class MenuScene : MonoBehaviour
             Button b = t.GetComponent<Button>();
             b.onClick.AddListener(() => OnLevelSelect(currentIndex));
 
+            Image img = t.GetComponent<Image>();
+
+            // Is it unlocked?
+            if (i <= SaveManager.Instance.state.completedLevel)
+            {
+                // It is unlocked!
+                if (i == SaveManager.Instance.state.completedLevel)
+                {
+                    // It is not completed!
+                    img.color = Color.white;
+                }
+                else
+                {
+                    // Level is already completed!
+                    img.color = Color.green;
+                }
+            }
+            else
+            {
+                // Level isn't unlocked, disable the button
+                b.interactable = false;
+
+                // Set to a dark colour
+                img.color = Color.grey;
+            }
+
             i++;
         }
+    }
+
+    private void SetCameraTo(int menuIndex)
+    {
+        NavigateTo(menuIndex);
+        menuContainer.anchoredPosition3D = desiredMenuPosition;
     }
 
     private void NavigateTo(int menuIndex)
@@ -206,7 +242,7 @@ public class MenuScene : MonoBehaviour
         // Set the active index
         activeShipIndex = index;
         SaveManager.Instance.state.activeShip = index;
-        
+
         // Change the selected ship
 
         // Change the buy/set button text
@@ -287,6 +323,8 @@ public class MenuScene : MonoBehaviour
     
     private void OnLevelSelect(int currentIndex)
     {
+        Manager.Instance.currentLevel = currentIndex;
+        SceneManager.LoadScene("Game");
         Debug.Log("Selecting level : " + currentIndex);
     }
 
@@ -351,7 +389,7 @@ public class MenuScene : MonoBehaviour
         if (SaveManager.Instance.IsLaserOwned(currentIndex))
         {
             // Laser is owned
-            // is it already our current colour?
+            // is it already our current laser?
             if (activeLaserIndex == currentIndex)
             {
                 laserBuySetText.text = "Current Laser";
@@ -390,7 +428,7 @@ public class MenuScene : MonoBehaviour
         if (SaveManager.Instance.IsTrailOwned(currentIndex))
         {
             // Trail is owned
-            // is it already our current colour?
+            // is it already our current trail?
             if (activeTrailIndex == currentIndex)
             {
                 trailBuySetText.text = "Current Trail";
@@ -429,7 +467,7 @@ public class MenuScene : MonoBehaviour
         if (SaveManager.Instance.IsShipOwned(currentIndex))
         {
             // Ship is owned
-            // is it already our current colour?
+            // is it already our current ship?
             if (activeShipIndex == currentIndex)
             {
                 shipBuySetText.text = "Current Ship";
