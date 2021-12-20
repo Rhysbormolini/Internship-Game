@@ -25,6 +25,8 @@ public class MenuScene : MonoBehaviour
     [SerializeField] TextMeshProUGUI trailBuySetText;
     [SerializeField] TextMeshProUGUI goldText;
 
+    private MenuCamera menuCam;
+
     private int[] shipCost = new int[] { 0, 2500, 2500, 2500, 5000, 5000, 5000, 10000 };
     private int[] colourCost = new int[] { 0, 1750, 1750, 1750, 1750, 1750, 1750, 1750 };
     private int[] laserCost = new int[] { 0, 1000, 1000, 1000, 1000, 1000, 1000, 1000 };
@@ -38,11 +40,18 @@ public class MenuScene : MonoBehaviour
     private int activeLaserIndex;
     private int activeTrailIndex;
 
-
     private Vector3 desiredMenuPosition;
+
+    public AnimationCurve enteringLevelZoomCurve;
+    private bool isEnteringLevel = false;
+    private float zoomDuration = 3.9f;
+    private float zoomTransition;
 
     private void Start()
     {
+        // Find the only MenuCamera and asign it
+        menuCam = FindObjectOfType<MenuCamera>();
+
         // $$ TEMPORARY
         SaveManager.Instance.state.gold = 999999;
 
@@ -91,6 +100,36 @@ public class MenuScene : MonoBehaviour
 
         // Menu navigation (smooth)
         menuContainer.anchoredPosition3D = Vector3.Lerp(menuContainer.anchoredPosition3D, desiredMenuPosition, 0.1f);
+
+        // Entering level zoom
+        if (isEnteringLevel)
+        {
+            // Add to the zoomTransition float
+            zoomTransition += (1 / zoomDuration) * Time.deltaTime;
+
+            // Change the scale, following the animation curve
+            menuContainer.localScale = Vector3.Lerp(Vector3.one, Vector3.one * 5, enteringLevelZoomCurve.Evaluate(zoomTransition));
+
+            // Change the desired position of the canva, so it can follow the scale up
+            // This zooms in the centre
+            Vector3 newDesiredPosition = desiredMenuPosition * 5;
+            // This adds to the specific position of the level on the canvas
+            RectTransform rt = levelPanel.GetChild(Manager.Instance.currentLevel).GetComponent<RectTransform>();
+            newDesiredPosition -= rt.anchoredPosition3D * 5;
+
+            // This line will override the previous position update
+            menuContainer.anchoredPosition3D = Vector3.Lerp(desiredMenuPosition, newDesiredPosition, enteringLevelZoomCurve.Evaluate(zoomTransition));
+
+            // Fade to fadeout, this will override the first line of the update.
+            fadeGroup.alpha = zoomTransition;
+
+            // Are we done with the animation
+            if (zoomTransition >= 1)
+            {
+                // Enter the level
+                SceneManager.LoadScene("Game");
+            }
+        }
     }
 
     private void InitShop()
@@ -225,14 +264,17 @@ public class MenuScene : MonoBehaviour
             default:
             case 0:
                 desiredMenuPosition = Vector3.zero;
+                menuCam.BackToMainMenu();
                 break;
             // 1 = Play Menu
             case 1:
                 desiredMenuPosition = Vector3.right * 1920;
+                menuCam.MoveToLevel();
                 break;
             // 2 = Shop Menu
             case 2:
                 desiredMenuPosition = Vector3.left * 1920;
+                menuCam.MoveToShop();
                 break;
         }
     }
@@ -324,7 +366,7 @@ public class MenuScene : MonoBehaviour
     private void OnLevelSelect(int currentIndex)
     {
         Manager.Instance.currentLevel = currentIndex;
-        SceneManager.LoadScene("Game");
+        isEnteringLevel = true;
         Debug.Log("Selecting level : " + currentIndex);
     }
 
