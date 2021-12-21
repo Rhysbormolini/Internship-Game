@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Hidden/SgtBelt_Opaque
   target: {fileID: 4800000, guid: fadba8098476bba46baa3bfdb7c60189, type: 3}
-  variantHash: 1851415410
+  variantHash: 140561774
   projectHash: -1068831425
   variants:
   - Pipe: 0

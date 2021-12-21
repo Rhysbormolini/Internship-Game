@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Hidden/SgtRing
   target: {fileID: 4800000, guid: 4354769ef2f7dd3469a056d3151f77fb, type: 3}
-  variantHash: -1572343938
+  variantHash: 1947360726
   projectHash: -1068831425
   variants:
   - Pipe: 0

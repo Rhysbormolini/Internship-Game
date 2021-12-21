@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Hidden/SgtLightning
   target: {fileID: 4800000, guid: eea2333a66a3dd4448789f9b3d2f0d5d, type: 3}
-  variantHash: -395273187
+  variantHash: 1574718726
   projectHash: -1068831425
   variants:
   - Pipe: 0

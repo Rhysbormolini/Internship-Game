@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Hidden/SgtStarfieldInfinite
   target: {fileID: 4800000, guid: 5fe21cba1562d42429dfd5d1ef53990b, type: 3}
-  variantHash: 673930078
+  variantHash: -922267105
   projectHash: -1068831425
   variants:
   - Pipe: 0
