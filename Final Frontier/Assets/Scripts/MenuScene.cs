@@ -140,7 +140,7 @@ public class MenuScene : MonoBehaviour
             Debug.Log("You did not assign the ship/colour/laser/trail panels in the inspector");
         }
 
-        // For every children tranform under our ship panel, find the button and add onclick
+        // For every children tranform under our colour panel, find the button and add onclick
         int i = 0;
         foreach (Transform t in colourPanel)
         {
@@ -301,6 +301,14 @@ public class MenuScene : MonoBehaviour
         SaveManager.Instance.state.activeColour = index;
 
         // Change the colour of all ships
+        Manager.Instance.playerMaterial1.color = Manager.Instance.playerColours[index];
+        Manager.Instance.playerMaterial2.color = Manager.Instance.playerColours[index];
+        Manager.Instance.playerMaterial3.color = Manager.Instance.playerColours[index];
+        Manager.Instance.playerMaterial4.color = Manager.Instance.playerColours[index];
+        Manager.Instance.playerMaterial5.color = Manager.Instance.playerColours[index];
+        Manager.Instance.playerMaterial6.color = Manager.Instance.playerColours[index];
+        Manager.Instance.playerMaterial7.color = Manager.Instance.playerColours[index];
+        Manager.Instance.playerMaterial8.color = Manager.Instance.playerColours[index];
 
         // Change the buy/set button text
         colourBuySetText.text = "Current";
