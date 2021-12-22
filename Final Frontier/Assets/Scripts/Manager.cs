@@ -6,8 +6,8 @@ public class Manager : MonoBehaviour
 {
     public static Manager Instance { set; get; }
 
-    public Material playerMaterial1, playerMaterial2, playerMaterial3, playerMaterial4, playerMaterial5, playerMaterial6, playerMaterial7, playerMaterial8;
-    public GameObject[] playerShips = new GameObject[8];
+    public Material playerMaterial1/*, playerMaterial2, playerMaterial3, playerMaterial4, playerMaterial5, playerMaterial6, playerMaterial7, playerMaterial8*/;
+    public GameObject[] playerShips = new GameObject[1];
     public Color[] playerColours = new Color[8];
     public GameObject[] playerLasers = new GameObject[8];
     public GameObject[] playerTrails = new GameObject[8];

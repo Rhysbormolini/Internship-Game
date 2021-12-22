@@ -539,22 +539,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerMaterial1: {fileID: 2100000, guid: eb0e05a8e9690ce449dabac82aa2860c, type: 2}
-  playerMaterial2: {fileID: 2100000, guid: 61332a8c2257f0944b3fc5b714f01c68, type: 2}
-  playerMaterial3: {fileID: 0}
-  playerMaterial4: {fileID: 0}
-  playerMaterial5: {fileID: 0}
-  playerMaterial6: {fileID: 0}
-  playerMaterial7: {fileID: 0}
-  playerMaterial8: {fileID: 0}
   playerShips:
   - {fileID: 3368916564331560363, guid: b3c0a61dfe701344d819eb701e83f4b7, type: 3}
-  - {fileID: 100000, guid: 92bef5ab3696efe4e81b47284a28bc07, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   playerColours:
   - {r: 0.8745099, g: 0.8745099, b: 0.8745099, a: 1}
   - {r: 0, g: 0, b: 0, a: 1}
