@@ -550,24 +550,15 @@ MonoBehaviour:
   - {r: 0.78823537, g: 0.007843138, b: 0.80392164, a: 1}
   - {r: 1, g: 0.6901961, b: 0, a: 1}
   - {r: 0, g: 1, b: 0.909804, a: 1}
-  playerLasers:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  playerLasers: []
   playerTrails:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 2316262519048713578, guid: 941bc780beb5080429ef46e1e49e3cac, type: 3}
+  - {fileID: 8586949927848166364, guid: d98ff9bc5cec2344cab37517cedaa501, type: 3}
+  - {fileID: 3481313463060299228, guid: 7269210b92a1d4246a3af0beb8a83ac0, type: 3}
+  - {fileID: 6236629329434555140, guid: 32cb749579983e7409074ed8299cb5fd, type: 3}
+  - {fileID: 1735320914577148996, guid: b30ac1ca9bb86b941a0c1eedb27f3739, type: 3}
+  - {fileID: 8098084838878768054, guid: 95389b547f32ec340a192077032ef2c1, type: 3}
+  - {fileID: 6597502360516726046, guid: 3fcee83f5e846954da116cf1d3d71790, type: 3}
   currentLevel: 0
   menuFocus: 0
 --- !u!4 &1214818265

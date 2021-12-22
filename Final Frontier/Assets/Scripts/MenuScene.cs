@@ -42,6 +42,9 @@ public class MenuScene : MonoBehaviour
 
     private Vector3 desiredMenuPosition;
 
+    private GameObject currentTrail;
+    public GameObject trailLocation;
+
     public AnimationCurve enteringLevelZoomCurve;
     private bool isEnteringLevel = false;
     private float zoomDuration = 3.9f;
@@ -338,7 +341,22 @@ public class MenuScene : MonoBehaviour
         activeTrailIndex = index;
         SaveManager.Instance.state.activeTrail = index;
 
-        // Change the colour on all trails
+        // Change the trail on the player model
+        if (currentTrail != null)
+        {
+            Destroy(currentTrail);
+        }
+
+        // Create new trail
+        currentTrail = Instantiate(Manager.Instance.playerTrails[index]) as GameObject;
+
+        // Set it as a child of the player
+        currentTrail.transform.parent = trailLocation.transform;
+
+        // Fix the wierd scaling issues / rotation issues
+        currentTrail.transform.localPosition = new Vector3(0,-0.0433f,0.0044f);
+        currentTrail.transform.localRotation = Quaternion.Euler(4.26f, 0, 0);
+        //currentTrail.transform.localScale = Vector3.one * 0.01f;
 
         // Change the buy/set button text
         trailBuySetText.text = "Current";
