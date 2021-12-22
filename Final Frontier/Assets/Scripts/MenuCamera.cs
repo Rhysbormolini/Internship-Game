@@ -16,12 +16,14 @@ public class MenuCamera : MonoBehaviour
     private void Start()
     {
         startPosition = desiredPosition = transform.localPosition;
-        startRotation = desiredRotation = transform.rotation;
+        startRotation = desiredRotation = transform.localRotation;
     }
 
     private void Update()
     {
-        transform.localPosition = Vector3.Lerp(transform.localPosition, desiredPosition, 0.1f);
+        float x = Manager.Instance.GetPlayerInput().x;
+
+        transform.localPosition = Vector3.Lerp(transform.localPosition, desiredPosition + new Vector3(0,x,0) * 0.01f, 0.1f);
         transform.localRotation = Quaternion.Lerp(transform.localRotation, desiredRotation, 0.1f);
     }
 

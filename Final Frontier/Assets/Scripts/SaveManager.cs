@@ -9,10 +9,18 @@ public class SaveManager : MonoBehaviour
 
     private void Awake()
     {
-        //ResetSave();
+        ResetSave();
         DontDestroyOnLoad(gameObject);
         Instance = this;
         Load();
+
+        // Are we using the accelerometer AND can we use it?
+        if (state.usingAccelerometer && !SystemInfo.supportsAccelerometer)
+        {
+            // If we can't, make sure we're not trying next time
+            state.usingAccelerometer = false;
+            Save();
+        }
     }
 
     // Save the whole state of this savestate script to the player pref

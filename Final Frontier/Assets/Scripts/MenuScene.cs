@@ -19,6 +19,9 @@ public class MenuScene : MonoBehaviour
     public Transform laserPanel;
     public Transform trailPanel;
 
+    public Button tiltControlButton;
+    public Color tiltControlEnabled, tiltControlDisabled;
+
     [SerializeField] TextMeshProUGUI shipBuySetText;
     [SerializeField] TextMeshProUGUI colourBuySetText;
     [SerializeField] TextMeshProUGUI laserBuySetText;
@@ -52,11 +55,22 @@ public class MenuScene : MonoBehaviour
 
     private void Start()
     {
-        // Find the only MenuCamera and asign it
-        menuCam = FindObjectOfType<MenuCamera>();
-
         // $$ TEMPORARY
         SaveManager.Instance.state.gold = 999999;
+
+        // Check if we have an accelerometer
+        if (SystemInfo.supportsAccelerometer)
+        {
+            // Is it currently enabled?
+            tiltControlButton.GetComponent<Image>().color = (SaveManager.Instance.state.usingAccelerometer) ? tiltControlEnabled : tiltControlDisabled;
+        }
+        else
+        {
+            tiltControlButton.gameObject.SetActive(false);
+        }
+
+        // Find the only MenuCamera and asign it
+        menuCam = FindObjectOfType<MenuCamera>();
 
         // Position our camera on the focused menu
         SetCameraTo(Manager.Instance.menuFocus);
@@ -64,7 +78,7 @@ public class MenuScene : MonoBehaviour
         // Tell our gold text how much should be displaying
         UpdateGoldText();
         
-        // Grab the onl CanvasGroup in the scene
+        // Grab the only CanvasGroup in the scene
         fadeGroup = FindObjectOfType<CanvasGroup>();
 
         // Start with a white screen;
@@ -291,7 +305,7 @@ public class MenuScene : MonoBehaviour
         // Change the selected ship
 
         // Change the buy/set button text
-        shipBuySetText.text = "Current";
+        shipBuySetText.text = "Current Ship";
 
         // Remember preferences
         SaveManager.Instance.Save();
@@ -314,7 +328,7 @@ public class MenuScene : MonoBehaviour
         //Manager.Instance.playerMaterial8.color = Manager.Instance.playerColours[index];
 
         // Change the buy/set button text
-        colourBuySetText.text = "Current";
+        colourBuySetText.text = "Current Colour";
 
         // Remember preferences
         SaveManager.Instance.Save();
@@ -329,7 +343,7 @@ public class MenuScene : MonoBehaviour
         // Change the colour on all lasers
 
         // Change the buy/set button text
-        laserBuySetText.text = "Current";
+        laserBuySetText.text = "Current Laser";
 
         // Remember preferences
         SaveManager.Instance.Save();
@@ -359,7 +373,7 @@ public class MenuScene : MonoBehaviour
         //currentTrail.transform.localScale = Vector3.one * 0.01f;
 
         // Change the buy/set button text
-        trailBuySetText.text = "Current";
+        trailBuySetText.text = "Current Trail";
 
         // Remember preferences
         SaveManager.Instance.Save();
@@ -682,5 +696,17 @@ public class MenuScene : MonoBehaviour
                 Debug.Log("Not enough gold");
             }
         }
+    }
+
+    public void OnTiltControl()
+    {
+        // Toggle the accelerometer bool
+        SaveManager.Instance.state.usingAccelerometer = !SaveManager.Instance.state.usingAccelerometer;
+
+        // make sure we save the player's preferences
+        SaveManager.Instance.Save();
+
+        // Change the display image of the tilt control button
+        tiltControlButton.GetComponent<Image>().color = (SaveManager.Instance.state.usingAccelerometer) ? tiltControlEnabled : tiltControlDisabled;
     }
 }
