@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Space Graphics Toolkit/Thruster
   target: {fileID: 4800000, guid: 4c6c49a25e815104593d202e385ef3db, type: 3}
-  variantHash: -1823988192
+  variantHash: -2070669246
   projectHash: -1068831425
   variants:
   - Pipe: 0

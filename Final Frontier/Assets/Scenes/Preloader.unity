@@ -539,8 +539,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerMaterial1: {fileID: 2100000, guid: eb0e05a8e9690ce449dabac82aa2860c, type: 2}
-  playerShips:
-  - {fileID: 3368916564331560363, guid: b3c0a61dfe701344d819eb701e83f4b7, type: 3}
   playerColours:
   - {r: 0.8745099, g: 0.8745099, b: 0.8745099, a: 1}
   - {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 1}
@@ -550,15 +548,14 @@ MonoBehaviour:
   - {r: 0.78823537, g: 0.007843138, b: 0.80392164, a: 1}
   - {r: 1, g: 0.6901961, b: 0, a: 1}
   - {r: 0, g: 1, b: 0.909804, a: 1}
-  playerLasers: []
   playerTrails:
-  - {fileID: 2316262519048713578, guid: 941bc780beb5080429ef46e1e49e3cac, type: 3}
-  - {fileID: 8586949927848166364, guid: d98ff9bc5cec2344cab37517cedaa501, type: 3}
-  - {fileID: 3481313463060299228, guid: 7269210b92a1d4246a3af0beb8a83ac0, type: 3}
-  - {fileID: 6236629329434555140, guid: 32cb749579983e7409074ed8299cb5fd, type: 3}
-  - {fileID: 1735320914577148996, guid: b30ac1ca9bb86b941a0c1eedb27f3739, type: 3}
-  - {fileID: 8098084838878768054, guid: 95389b547f32ec340a192077032ef2c1, type: 3}
-  - {fileID: 6597502360516726046, guid: 3fcee83f5e846954da116cf1d3d71790, type: 3}
+  - {fileID: 592107005590902316, guid: 30457f4922aaeed418d229c9681e9ad9, type: 3}
+  - {fileID: 4000853788109853828, guid: 1a15e8d67b2e3a04d9978ad752cb0b3d, type: 3}
+  - {fileID: 86292376421078036, guid: 87e09072f99251340853b11b97da98f2, type: 3}
+  - {fileID: 6168917606724131865, guid: 3df4d5715030bfa499c45792f21c7e76, type: 3}
+  - {fileID: 6000578359165697904, guid: b7b458a2303de96429d972cad23fdf44, type: 3}
+  - {fileID: 5259462281473398154, guid: a4a5533c857009048a0ed5497299b28a, type: 3}
+  - {fileID: 9172205320902211799, guid: b3ef22401940e034490fa58ecef7ab3a, type: 3}
   currentLevel: 0
   menuFocus: 0
 --- !u!4 &1214818265

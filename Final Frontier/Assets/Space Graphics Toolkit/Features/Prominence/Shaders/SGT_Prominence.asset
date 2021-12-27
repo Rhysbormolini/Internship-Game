@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Hidden/SgtProminence
   target: {fileID: 4800000, guid: 71898a48e07e54b4cafe875e78f853c9, type: 3}
-  variantHash: 1346737751
+  variantHash: -1919963983
   projectHash: -1068831425
   variants:
   - Pipe: 0

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Space Graphics Toolkit/Spacetime Additive
   target: {fileID: 4800000, guid: cae7d61c0922b8a44aa9e55b1b9eca49, type: 3}
-  variantHash: -593026004
+  variantHash: -1271856202
   projectHash: -1068831425
   variants:
   - Pipe: 0

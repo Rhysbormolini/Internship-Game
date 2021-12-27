@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Hidden/SgtCoronaInner
   target: {fileID: 4800000, guid: 2dd619e59b6b4c340af21e6f62af5975, type: 3}
-  variantHash: 1994736663
+  variantHash: -1096978696
   projectHash: -1068831425
   variants:
   - Pipe: 0

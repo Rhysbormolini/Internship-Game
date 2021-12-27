@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Hidden/SgtLens
   target: {fileID: 4800000, guid: fd80b3f31eb10b949bc50c9bc167f7c1, type: 3}
-  variantHash: 1652306301
+  variantHash: -1649219525
   projectHash: -1068831425
   variants:
   - Pipe: 0

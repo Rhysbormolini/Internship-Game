@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Hidden/SgtBlackHole
   target: {fileID: 4800000, guid: be572392ec048874aa5a4f9513542f07, type: 3}
-  variantHash: -508838960
+  variantHash: -1127468841
   projectHash: -1068831425
   variants:
   - Pipe: 0
