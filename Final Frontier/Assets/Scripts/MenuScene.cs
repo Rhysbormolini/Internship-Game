@@ -127,7 +127,7 @@ public class MenuScene : MonoBehaviour
             // Change the scale, following the animation curve
             menuContainer.localScale = Vector3.Lerp(Vector3.one, Vector3.one * 5, enteringLevelZoomCurve.Evaluate(zoomTransition));
 
-            // Change the desired position of the canva, so it can follow the scale up
+            // Change the desired position of the canvas, so it can follow the scale up
             // This zooms in the centre
             Vector3 newDesiredPosition = desiredMenuPosition * 5;
             // This adds to the specific position of the level on the canvas
