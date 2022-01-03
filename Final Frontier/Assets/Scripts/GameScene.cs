@@ -11,6 +11,9 @@ public class GameScene : MonoBehaviour
 
     private void Start()
     {
+        // Load up the level
+        SceneManager.LoadScene(Manager.Instance.currentLevel.ToString(), LoadSceneMode.Additive);
+        
         // Get the only fade canvasGroup in the scene
         fadeGroup = FindObjectOfType<CanvasGroup>();
 

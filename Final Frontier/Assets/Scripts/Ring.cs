@@ -23,7 +23,13 @@ public class Ring : MonoBehaviour
         if (ringActive)
         {
             objectiveScript.NextRing();
+            Invoke("SetFalse", 5.0f);
         }
 
+    }
+
+    void SetFalse()
+    {
+        gameObject.SetActive(false);
     }
 }

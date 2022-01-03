@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMotor : MonoBehaviour
 {
@@ -9,6 +10,11 @@ public class PlayerMotor : MonoBehaviour
     [SerializeField] private float baseSpeed = 10.0f;
     [SerializeField] private float rotSpeedX = 3.5f;
     [SerializeField] private float rotSpeedY = 1.5f;
+
+    private float deathTime;
+    private float deathDuration = 2;
+
+    public GameObject deathExplosion, shipCamera;
 
     private void Start()
     {
@@ -26,6 +32,19 @@ public class PlayerMotor : MonoBehaviour
 
     private void Update()
     {
+        // If the player is dead (has a deathTime)
+        if (deathTime != 0)
+        {
+            // Wait x seconds, then restatrd the level
+            if (Time.time - deathTime > deathDuration)
+            {
+                SceneManager.LoadScene("Game");
+            }
+
+            return;
+        }
+
+
         // Give the player forward velocity
         Vector3 moveVector = transform.forward * baseSpeed;
 
@@ -56,5 +75,21 @@ public class PlayerMotor : MonoBehaviour
 
         // Move him!
         controller.Move(moveVector * Time.deltaTime);
+    }
+
+    // If we hit something
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        // Set a death timestamp
+        deathTime = Time.time;
+
+        // Player explosion effect
+        GameObject go = Instantiate(deathExplosion) as GameObject;
+        go.transform.position = transform.position;
+
+        // Hide player mesh
+        transform.GetChild(0).gameObject.SetActive(false);
+
+        shipCamera.GetComponent<PlayerCamera>().enabled = false;
     }
 }

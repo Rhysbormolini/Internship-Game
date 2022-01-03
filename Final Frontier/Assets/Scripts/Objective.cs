@@ -34,8 +34,8 @@ public class Objective : MonoBehaviour
 
     public void NextRing()
     {
-        // Pla FX on the current ring
-        // ??
+        // Play FX on the current ring
+        rings[ringPassed].GetComponent<Animator>().SetTrigger("collectionTrigger");
 
         // up the int
         ringPassed++;
