@@ -90,6 +90,7 @@ public class PlayerMotor : MonoBehaviour
         // Hide player mesh
         transform.GetChild(0).gameObject.SetActive(false);
 
+        // Turn off Player Camera script on the main camera to ensure it doesn't spaze out when it no longer has the player model to follow
         shipCamera.GetComponent<PlayerCamera>().enabled = false;
     }
 }
