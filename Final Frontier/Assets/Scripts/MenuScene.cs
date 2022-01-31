@@ -56,7 +56,7 @@ public class MenuScene : MonoBehaviour
     private void Start()
     {
         // $$ TEMPORARY
-        SaveManager.Instance.state.gold = 999999;
+        //SaveManager.Instance.state.gold = 999999;
 
         // Check if we have an accelerometer
         if (SystemInfo.supportsAccelerometer)
